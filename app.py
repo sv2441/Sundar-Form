@@ -127,11 +127,7 @@ st.set_page_config(layout="wide", page_title="Dark Pattern Detector")
 
 st.title("Dark Pattern Detector for Video Content")
 
-# Initialize session state for API keys and prompt if not already set
-if 'youtube_api_key' not in st.session_state:
-    st.session_state.youtube_api_key = st.secrets.get("api_keys", {}).get("youtube_api_key", "")
-if 'gemini_api_key' not in st.session_state:
-    st.session_state.gemini_api_key =  st.secrets.get("api_keys", {}).get("gemini_api_key", "")
+# Initialize session state for prompt if not already set
 if 'gemini_prompt' not in st.session_state:
     st.session_state.gemini_prompt = """Here is your revised detailed analysis prompt, structured for rigorous evaluation and formatted to yield a JSON object output. This version incorporates all your requirements — including detailed issue flags, excerpts, timestamps/visual cues, explanations, confidence scoring, and product name extraction:
 🔍 Prompt: Detailed Analysis for Dark Patterns and Deceptive Practices
@@ -226,12 +222,6 @@ Output as a valid JSON object with the following keys:
   ]
 }
 """
-if 'firebase_config' not in st.session_state:
-    st.session_state.firebase_config = ""
-if 'supabase_url' not in st.session_state:
-    st.session_state.supabase_url = ""
-if 'supabase_key' not in st.session_state:
-    st.session_state.supabase_key = ""
 # Initialize analyzed_youtube_results in session state if it doesn't exist
 if 'analyzed_youtube_results' not in st.session_state:
     st.session_state['analyzed_youtube_results'] = []
@@ -242,51 +232,30 @@ selected_page = st.sidebar.radio("Go to", ["Application", "Settings"])
 
 if selected_page == "Settings":
     st.header("Application Settings")
-    st.write("Configure your API keys and the prompt for dark pattern detection here.")
-
-    st.session_state.youtube_api_key = st.text_input(
-        "YouTube Data API Key:",
-        type="password",
-        value=st.session_state.youtube_api_key,
-        key="settings_youtube_api_key"
-    )
-    st.session_state.gemini_api_key = st.text_input(
-        "Gemini 2.5 Flash API Key:",
-        type="password",
-        value=st.session_state.gemini_api_key,
-        key="settings_gemini_api_key"
-    )
+    st.write("Configure the prompt for dark pattern detection here.")
+    
+    st.info("🔐 API keys are configured in the secrets.toml file and cannot be edited from this interface for security reasons.")
+    
     st.session_state.gemini_prompt = st.text_area(
         "Prompt for Dark Pattern Detection:",
         value=st.session_state.gemini_prompt,
         height=400,
-        key="settings_gemini_prompt"
+        key="settings_gemini_prompt",
+        help="Customize the analysis prompt that will be sent to the Gemini AI model for dark pattern detection."
     )
-
-    st.subheader("Database Credentials (Optional)")
-    st.session_state.firebase_config = st.text_area(
-        "Firebase Config (JSON):",
-        height=100,
-        value=st.session_state.firebase_config,
-        key="settings_firebase_config"
-    )
-    st.session_state.supabase_url = st.text_input(
-        "Supabase URL:",
-        value=st.session_state.supabase_url,
-        key="settings_supabase_url"
-    )
-    st.session_state.supabase_key = st.text_input(
-        "Supabase Anon Key:",
-        type="password",
-        value=st.session_state.supabase_key,
-        key="settings_supabase_key"
-    )
-    st.info("Settings are saved automatically. Switch to 'Application' to use them.")
+    
+    st.info("✅ Prompt settings are saved automatically. Switch to 'Application' to use them.")
 
 elif selected_page == "Application":
-    # Retrieve values from session state
-    youtube_api_key = st.session_state.youtube_api_key
-    gemini_api_key = st.session_state.gemini_api_key
+    # Retrieve API keys from secrets and prompt from session state
+    try:
+        youtube_api_key = st.secrets["api_keys"]["youtube_api_key"]
+        gemini_api_key = st.secrets["api_keys"]["gemini_api_key"]
+    except KeyError as e:
+        st.error(f"❌ Missing API key in secrets.toml: {e}")
+        st.info("Please ensure your .streamlit/secrets.toml file contains the required API keys under [api_keys] section.")
+        st.stop()
+    
     gemini_prompt = st.session_state.gemini_prompt
 
     # Select search mode
