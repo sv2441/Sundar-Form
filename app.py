@@ -291,8 +291,12 @@ elif selected_page == "Application":
     else:
         platform_options = st.multiselect("Select Platform(s):", ["YouTube", "TikTok"], default=["YouTube"])
 
-    # Input for channels to exclude
-    channels_to_exclude = st.text_area("Enter channels/creators to exclude (comma-separated or multi-line):", height=68)
+    # Input for channels to exclude - now with default values
+    channels_to_exclude = st.text_area(
+        "Enter channels/creators to exclude (comma-separated or multi-line):",
+        height=68,
+        value="@shiseido, @shiseidousa, @ShiseidoAsia, @ShiseidoKorea, @SHISEIDOofficial"
+    )
 
     # Button to start search and analysis
     if st.button("Start Search and Analysis"):
@@ -361,7 +365,7 @@ elif selected_page == "Application":
                                         "Description": description,
                                         "Transcript": transcript_text,
                                         "Dark Pattern Analysis": "N/A", # Placeholder for Gemini API
-                                        "Confidence Score": "N/A", # Placeholder for Gemini API
+                                        "Overall Confidence Score": "N/A", # Placeholder for Gemini API
                                         "Product Names": "N/A" # Placeholder for extracted product names
                                     })
                             except Exception as e:
@@ -417,7 +421,7 @@ elif selected_page == "Application":
                                                     "Description": description,
                                                     "Transcript": transcript_text,
                                                     "Dark Pattern Analysis": "N/A",
-                                                    "Confidence Score": "N/A",
+                                                    "Overall Confidence Score": "N/A",
                                                     "Product Names": "N/A"
                                                 })
                                         else:
@@ -443,8 +447,33 @@ elif selected_page == "Application":
                     video_data["Overall Confidence Score"] = analysis_result.get("overallConfidenceScore", "N/A")
                     video_data["Product Names"] = ", ".join(analysis_result.get("productNames", [])) if analysis_result.get("productNames") else "N/A"
 
-                    # For the summary DataFrame, we'll just show a brief indication
-                    video_data["Dark Pattern Summary"] = f"{len(video_data['Raw Dark Pattern Analysis'])} dark patterns identified." if video_data['Raw Dark Pattern Analysis'] else "No dark patterns detected."
+                    # Format the detailed analysis for direct display in the DataFrame
+                    formatted_analysis = ""
+                    dark_pattern_analysis_details = video_data["Raw Dark Pattern Analysis"]
+                    if isinstance(dark_pattern_analysis_details, list):
+                        for dp_item in dark_pattern_analysis_details:
+                            category = dp_item.get("category", "N/A")
+                            excerpt = dp_item.get("excerpt", "N/A")
+                            reasoning = dp_item.get("reasoning", "N/A")
+                            confidence = dp_item.get("confidenceScore", "N/A")
+                            
+                            formatted_analysis += f"Category: {category}\nExcerpt: '{excerpt}'\nReasoning: {reasoning}\nConfidence: {confidence}\n"
+                            
+                            regulatory_refs = dp_item.get("regulatoryViolationReference", [])
+                            if regulatory_refs and isinstance(regulatory_refs, list):
+                                formatted_analysis += "Regulatory Violations:\n"
+                                for ref in regulatory_refs:
+                                    law = ref.get("lawGuidance", "N/A")
+                                    article = ref.get("articleClause", "N/A")
+                                    synthesis = ref.get("highLevelSynthesis", "N/A")
+                                    formatted_analysis += f"  - Law/Guidance: {law}, Article/Clause: {article}\n    Synthesis: {synthesis}\n"
+                            formatted_analysis += "\n"
+                        if not formatted_analysis:
+                            formatted_analysis = "No dark patterns detected."
+                    else:
+                        formatted_analysis = "Analysis data not in expected format." # Fallback if not list
+
+                    video_data["Dark Pattern Analysis"] = formatted_analysis # This will now hold the detailed string for the table
 
                     all_youtube_results[i] = video_data
                 st.success("Dark Pattern Analysis complete!")
@@ -463,11 +492,12 @@ elif selected_page == "Application":
                 with tab1:
                     st.subheader("Summary of Analyzed Videos")
                     summary_df = pd.DataFrame(st.session_state['analyzed_youtube_results'])
-                    display_cols = ["Title", "Channel", "URL", "Dark Pattern Summary", "Overall Confidence Score", "Product Names"]
+                    # Display all relevant columns, including the detailed analysis
+                    display_cols = ["Title", "Channel", "URL", "Dark Pattern Analysis", "Overall Confidence Score", "Product Names"]
                     st.dataframe(summary_df[display_cols], use_container_width=True)
 
                 with tab2:
-                    st.subheader("Detailed Dark Pattern Analysis")
+                    st.subheader("Detailed Dark Pattern Analysis (Collapsible View)")
                     
                     # Ensure the list is not empty before creating selectbox
                     if st.session_state['analyzed_youtube_results']:
