@@ -1,6 +1,7 @@
 # Streamlit secrets file containing API keys
 .streamlit/secrets.toml
-
+app2copy.py
+README.md
 # Python cache files
 __pycache__/
 *.py[cod]
