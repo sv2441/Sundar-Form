@@ -7,6 +7,34 @@ import os
 from urllib.parse import urlparse, parse_qs
 import json # Import json for handling structured responses
 import requests # Import requests for API calls
+from pyairtable import Table
+
+# Function to fetch all records from Airtable with pagination
+def fetch_all_records(base_id, table_id, api_key):
+    """Helper function to fetch all records with pagination"""
+    headers = {
+        "Authorization": f"Bearer {api_key}"
+    }
+    url = f'https://api.airtable.com/v0/{base_id}/{table_id}'
+    all_records = []
+    params = {}
+    
+    while True:
+        response = requests.get(url, headers=headers, params=params)
+        if response.status_code != 200:
+            st.error(f"Error fetching data: {response.status_code}")
+            return []
+            
+        response_data = response.json()
+        all_records.extend(response_data.get('records', []))
+        
+        # Check if there are more records
+        offset = response_data.get('offset')
+        if not offset:
+            break
+        params['offset'] = offset
+        
+    return all_records
 
 # Function to extract video ID from YouTube URL
 def extract_video_id(url):
@@ -136,13 +164,13 @@ For each of the following categories, identify and extract specific excerpts fro
 
 🔎 Categories to Evaluate:
 Implied Scarcity / Sale Mention
-Look for language that creates urgency, such as “limited time,” “almost gone,” “backup stock,” or countdowns.
+Look for language that creates urgency, such as "limited time," "almost gone," "backup stock," or countdowns.
 Provide quote(s) and describe how urgency is being manufactured.
 Lack of Clear Disclosure
 Determine if any form of sponsorship, advertising, or paid partnership is disclosed.
 If disclosed, assess whether it is clear, prominent, and upfront — or buried/ambiguous (e.g., in hashtags or at the end).
 Vague or Ambiguous Language
-Flag any unclear promotional terms like “collab,” “sp,” “ambassador,” or “partner” when used without also stating “Ad,” “Sponsored,” or “Paid Promotion.”
+Flag any unclear promotional terms like "collab," "sp," "ambassador," or "partner" when used without also stating "Ad," "Sponsored," or "Paid Promotion."
 Explain why the term may mislead viewers.
 Inconsistent or Incomplete Disclosures
 Evaluate whether disclosures are missing in certain formats (e.g., not repeated in long-form videos, livestreams, or multi-part stories).
@@ -166,13 +194,13 @@ Extract and list all product names mentioned.
 Regulatory Violations Reference:
 Law / Guidance | Article / Clause | Verbatim Text | High-Level Synthesis
 ---|---|---|---
-Code de la consommation | Art. L121‑1 | “Les pratiques commerciales déloyales sont interdites. Une pratique commerciale est déloyale lorsqu'elle est contraire aux exigences de la diligence professionnelle et qu'elle altère ou est susceptible d'altérer de manière substantielle le comportement économique du consommateur normalement informé et raisonnablement attentif et avisé, à l’égard d’un bien ou d’un service.” | • Prohibits unfair or misleading practices<br>• Applies to actions that materially affect consumer decisions, including deceptive urgency or omissions
-Code de la consommation | Art. L121‑1‑1 | “Sont réputées trompeuses au sens de l’article L. 121‑1 les pratiques commerciales qui ont pour objet : (…) 5° De proposer l'achat de produits… à un prix indiqué sans révéler les raisons plausibles… quantités… raisonnables compte tenu du produit… de l’ampleur de la publicité… et du prix proposé” | • Defines specific deceptive practices<br>• Clause 5 prohibits false scarcity or misrepresenting price/availability without reasonable basis
-Loi n° 2023‑451 (9 juin 2023) | Art. 1 | Defines “influence commerciale” as: “les personnes physiques ou morales qui, à titre onéreux, mobilisent leur notoriété… pour communiquer… des contenus visant à faire la promotion, directement ou indirectement, de biens… par voie électronique.” | • Establishes legal definition of influencer marketing<br>• Covers paid promotions via social media
-Loi n° 2023‑451 (9 juin 2023) | Art. 4 & 5 (via ordonnance 6 nov 2024) | Requires influencers to use clear labels such as “publicité” or “collaboration commerciale”, visible and adapted to the format. | • Mandates explicit disclosure of commercial intent<br>• Labels must be visible, understandable, and persistent across formats
+Code de la consommation | Art. L121‑1 | "Les pratiques commerciales déloyales sont interdites. Une pratique commerciale est déloyale lorsqu'elle est contraire aux exigences de la diligence professionnelle et qu'elle altère ou est susceptible d'altérer de manière substantielle le comportement économique du consommateur normalement informé et raisonnablement attentif et avisé, à l'égard d'un bien ou d'un service." | • Prohibits unfair or misleading practices<br>• Applies to actions that materially affect consumer decisions, including deceptive urgency or omissions
+Code de la consommation | Art. L121‑1‑1 | "Sont réputées trompeuses au sens de l'article L. 121‑1 les pratiques commerciales qui ont pour objet : (...) 5° De proposer l'achat de produits… à un prix indiqué sans révéler les raisons plausibles… quantités… raisonnables compte tenu du produit… de l'ampleur de la publicité… et du prix proposé" | • Defines specific deceptive practices<br>• Clause 5 prohibits false scarcity or misrepresenting price/availability without reasonable basis
+Loi n° 2023‑451 (9 juin 2023) | Art. 1 | Defines "influence commerciale" as: "les personnes physiques ou morales qui, à titre onéreux, mobilisent leur notoriété… pour communiquer… des contenus visant à faire la promotion, directement ou indirectement, de biens… par voie électronique." | • Establishes legal definition of influencer marketing<br>• Covers paid promotions via social media
+Loi n° 2023‑451 (9 juin 2023) | Art. 4 & 5 (via ordonnance 6 nov 2024) | Requires influencers to use clear labels such as "publicité" or "collaboration commerciale", visible and adapted to the format. | • Mandates explicit disclosure of commercial intent<br>• Labels must be visible, understandable, and persistent across formats
 Sanctions | Non-compliance | Non-compliance may result in penalties enforced by DGCCRF (fines, injunctions), covering any format or platform. | • Provides enforcement mechanisms<br>• Applies across all influencer content formats
-ARPP “Communication Publicitaire Numérique” | Art. b2, §1‑2 | “Identification of Advertiser:… must be easily identifiable… advertising presentations… should avoid confusion… conditions… must be clearly specified… notes must be immediately visible… legible… intelligible… not immersed under other information.” | • Demands clear advertiser identification<br>• Requires disclosures to be visible, legible, and not obscured by other content
-ARPP “Communication Publicitaire Numérique” | Section 5 – Comfort of use | “Digital advertising communication must respect… comfort… not be overlaying… autoplay videos… should not have audio… enabled by default.” | • Ensures ads don’t disrupt user experience (UX)<br>• Prevents deceptive integration of ads into user interface
+ARPP "Communication Publicitaire Numérique" | Art. b2, §1‑2 | "Identification of Advertiser:… must be easily identifiable… advertising presentations… should avoid confusion… conditions… must be clearly specified… notes must be immediately visible… legible… intelligible… not immersed under other information." | • Demands clear advertiser identification<br>• Requires disclosures to be visible, legible, and not obscured by other content
+ARPP "Communication Publicitaire Numérique" | Section 5 – Comfort of use | "Digital advertising communication must respect… comfort… not be overlaying… autoplay videos… should not have audio… enabled by default." | • Ensures ads don't disrupt user experience (UX)<br>• Prevents deceptive integration of ads into user interface
 
 Output as a valid JSON object with the following keys:
 {
@@ -204,7 +232,7 @@ Output as a valid JSON object with the following keys:
           "highLevelSynthesis": "Mandates explicit disclosure of commercial intent; Labels must be visible, understandable, and persistent across formats"
         },
         {
-          "lawGuidance": "ARPP “Communication Publicitaire Numérique”",
+          "lawGuidance": "ARPP "Communication Publicitaire Numérique"",
           "articleClause": "Art. b2, §1‑2",
           "highLevelSynthesis": "Demands clear advertiser identification; Requires disclosures to be visible, legible, and not obscured by other content"
         }
@@ -228,9 +256,93 @@ if 'analyzed_youtube_results' not in st.session_state:
 
 # Sidebar for navigation
 st.sidebar.title("Navigation")
-selected_page = st.sidebar.radio("Go to", ["Application", "Settings"])
+selected_page = st.sidebar.radio("Go to", ["Application", "Settings", "Dark Pattern Reference"])
 
-if selected_page == "Settings":
+if selected_page == "Dark Pattern Reference":
+    st.header("Dark Pattern Reference Tables")
+    
+    try:
+        airtable_api_key = st.secrets["api_keys"]["airtable_api_key"]
+        airtable_base_id = st.secrets["airtable"]["base_id"]
+        
+        # Create tabs for the two tables
+        tab1, tab2 = st.tabs(["Influencer Dark Patterns", "Law/Guidance Clauses"])
+        
+        with tab1:
+            st.subheader("Influencer Dark Pattern Types")
+            
+            # Fetch dark pattern records using direct API
+            dark_pattern_records = fetch_all_records(
+                airtable_base_id,
+                "tblOqL0mtNyY74Z2d",  # Dark Pattern table ID
+                airtable_api_key
+            )
+            
+            # Convert to DataFrame
+            dark_pattern_df = pd.DataFrame([
+                {
+                    "Issues": record["fields"].get("Issues", ""),
+                    "Description": record["fields"].get("Description", ""),
+                    "Classification": record["fields"].get("Classification", ""),
+                    "Remarks": record["fields"].get("Remarks", "")
+                }
+                for record in dark_pattern_records
+            ])
+            
+            # Display the DataFrame
+            st.dataframe(
+                dark_pattern_df,
+                column_config={
+                    "Issues": "Dark Pattern Type",
+                    "Description": "Description",
+                    "Classification": "Detection Status",
+                    "Remarks": "Additional Notes"
+                },
+                use_container_width=True
+            )
+        
+        with tab2:
+            st.subheader("Law and Guidance Reference")
+            
+            # Fetch law/guidance records using direct API
+            law_guidance_records = fetch_all_records(
+                airtable_base_id,
+                "tblk0vHIm00L5P1ME",  # Law/Guidance table ID
+                airtable_api_key
+            )
+            
+            # Convert to DataFrame
+            law_guidance_df = pd.DataFrame([
+                {
+                    "Law/Guidance": record["fields"].get("Law/Guidance Name", ""),
+                    "Clause/Article": record["fields"].get("Clause or Article Reference", ""),
+                    "Verbatim": record["fields"].get("Verbatim of Clause or Article", ""),
+                    "High Level Synthesis": record["fields"].get("High Level Synthesis (Bullets)", "")
+                }
+                for record in law_guidance_records
+            ])
+            
+            # Display the DataFrame
+            st.dataframe(
+                law_guidance_df,
+                column_config={
+                    "Law/Guidance": "Law/Guidance Name",
+                    "Clause/Article": "Article Reference",
+                    "Verbatim": "Full Text",
+                    "High Level Synthesis": "Summary"
+                },
+                use_container_width=True
+            )
+            
+    except KeyError as e:
+        st.error(f"❌ Missing Airtable configuration in secrets.toml: {e}")
+        st.info("Please ensure your .streamlit/secrets.toml file contains the required Airtable API key and base ID under [api_keys] and [airtable] sections.")
+        st.stop()
+    except Exception as e:
+        st.error(f"Error fetching data from Airtable: {e}")
+        st.stop()
+
+elif selected_page == "Settings":
     st.header("Application Settings")
     st.write("Configure the prompt for dark pattern detection here.")
     
