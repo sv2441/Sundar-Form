@@ -36,3 +36,10 @@ build/
 *.egg-info/
 .env
 kinetic-mile-439413-k0-bc4aef71e45c.json
+
+Dockerfile
+deploy.sh
+deploy.bat
+DEPLOYMENT_README.md
+env.yaml
+data_files/MANUAL_DEPLOYMENT.md

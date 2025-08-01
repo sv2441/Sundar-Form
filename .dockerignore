@@ -1,0 +1,79 @@
+# Python virtual environment
+venv/
+env/
+.env/
+.venv/
+
+# Data folders
+cookie_analysis_data/
+data/
+exports/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Local configuration
+.env
+.env.local
+.env.*.local
+config.local.json
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Firebase service account (will be copied separately)
+firebase-service-account.json
+
+# Test files
+test_*.py
+*_test.py
+
+# Documentation files
+*.md
+!README.md
+
+# Temporary files
+temp/
+tmp/
