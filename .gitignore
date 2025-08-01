@@ -34,3 +34,5 @@ Thumbs.db
 dist/
 build/
 *.egg-info/
+.env
+kinetic-mile-439413-k0-bc4aef71e45c.json

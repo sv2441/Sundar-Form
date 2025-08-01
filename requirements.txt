@@ -4,3 +4,9 @@ youtube-transcript-api
 pandas
 requests
 pyairtable
+yt-dlp
+openai-whisper
+selenium
+beautifulsoup4
+firebase-admin
+python-dotenv
