@@ -8,7 +8,7 @@ import pandas as pd
 import re
 from googleapiclient.discovery import build
 from youtube_transcript_api import YouTubeTranscriptApi, NoTranscriptFound, TranscriptsDisabled
-from utils import extract_video_id, analyze_with_gemini, format_dark_pattern_analysis
+from Utility.utils import extract_video_id, analyze_with_gemini, format_dark_pattern_analysis
 
 
 class YouTubeAnalyzer:

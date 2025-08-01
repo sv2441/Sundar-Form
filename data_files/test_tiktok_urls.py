@@ -4,7 +4,7 @@ Test script for the specific TikTok URLs provided by the user.
 
 import sys
 import os
-from tiktok_module import TikTokAnalyzer
+from Utility.tiktok_module import TikTokAnalyzer
 
 # The specific TikTok URLs provided by the user
 TEST_URLS = [

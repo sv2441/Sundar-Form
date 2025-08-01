@@ -591,7 +591,7 @@ class TikTokAnalyzer:
         st.write("Performing dark pattern analysis on TikTok videos...")
         
         # Import here to avoid circular imports
-        from utils import analyze_with_gemini, format_dark_pattern_analysis
+        from Utility.utils import analyze_with_gemini, format_dark_pattern_analysis
         
         for i, video in enumerate(video_results):
             st.write(f"Analyzing video {i+1}/{len(video_results)}: {video.get('Title', 'Unknown')}")

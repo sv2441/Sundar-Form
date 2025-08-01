@@ -5,7 +5,7 @@ Contains all Streamlit interface elements and display logic.
 
 import streamlit as st
 import pandas as pd
-from utils import fetch_all_records
+from Utility.utils import fetch_all_records
 import os
 
 
@@ -114,7 +114,7 @@ def render_history_page():
     st.header("📚 Analysis History")
     
     # Import Firebase manager
-    from firebase_module import create_firebase_manager
+    from Utility.firebase_module import create_firebase_manager
     
     firebase_manager = create_firebase_manager()
     
