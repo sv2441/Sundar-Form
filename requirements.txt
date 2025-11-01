@@ -10,3 +10,7 @@ selenium
 beautifulsoup4
 firebase-admin
 python-dotenv
+langchain
+langchain-google-genai
+pydantic
+google-generativeai

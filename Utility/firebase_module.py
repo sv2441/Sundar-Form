@@ -55,45 +55,47 @@ class FirebaseManager:
             st.error(f"❌ Firebase initialization failed: {str(e)}")
             self.db = None
     
-    def save_analysis_session(self, session_name: str, analysis_data: Dict, search_type: str, platform: str) -> bool:
+    def save_analysis_session(self, sessionName: str, analysis_data: Dict, search_type: str, platform: str, created_by: str = "unknown") -> Optional[str]:
         """
         Save analysis session data to Firebase.
         
         Args:
-            session_name (str): Name of the analysis session
+            sessionName (str): Name of the analysis session
             analysis_data (dict): Analysis results data
             search_type (str): Type of search (keywords/urls)
             platform (str): Platform analyzed (YouTube/TikTok)
+            created_by (str): User or system that created the session
             
         Returns:
-            bool: True if successful, False otherwise
+            str or None: Document ID if successful, None otherwise
         """
         if not self.db:
             st.error("❌ Firebase not initialized. Cannot save data.")
-            return False
+            return None
         
         try:
             # Prepare session data
             session_data = {
-                "session_name": session_name,
+                "sessionName": sessionName,
                 "search_type": search_type,
                 "platform": platform,
                 "analysis_data": analysis_data,
                 "created_at": datetime.now().isoformat(),
+                "created_by": created_by,
                 "video_count": len(analysis_data.get('videos', [])),
                 "overall_confidence_score": analysis_data.get('overall_confidence_score', 'N/A')
             }
             
             # Save to 'influencer-marketing' collection
-            doc_ref = self.db.collection('influencer-marketing').document(session_name)
+            doc_ref = self.db.collection('influencer-marketing').document(sessionName)
             doc_ref.set(session_data)
             
-            st.success(f"✅ Analysis session '{session_name}' saved to Firebase successfully!")
-            return True
+            st.success(f"✅ Analysis session '{sessionName}' saved to Firebase successfully!")
+            return doc_ref.id  # Return the document ID
             
         except Exception as e:
             st.error(f"❌ Error saving to Firebase: {str(e)}")
-            return False
+            return None
     
     def get_all_sessions(self) -> List[Dict]:
         """
@@ -121,12 +123,12 @@ class FirebaseManager:
             st.error(f"❌ Error retrieving sessions from Firebase: {str(e)}")
             return []
     
-    def get_session_by_name(self, session_name: str) -> Optional[Dict]:
+    def get_session_by_name(self, sessionName: str) -> Optional[Dict]:
         """
         Retrieve a specific session by name.
         
         Args:
-            session_name (str): Name of the session to retrieve
+            sessionName (str): Name of the session to retrieve
             
         Returns:
             dict or None: Session data if found, None otherwise
@@ -136,7 +138,7 @@ class FirebaseManager:
             return None
         
         try:
-            doc_ref = self.db.collection('influencer-marketing').document(session_name)
+            doc_ref = self.db.collection('influencer-marketing').document(sessionName)
             doc = doc_ref.get()
             
             if doc.exists:
@@ -150,12 +152,12 @@ class FirebaseManager:
             st.error(f"❌ Error retrieving session from Firebase: {str(e)}")
             return None
     
-    def delete_session(self, session_name: str) -> bool:
+    def delete_session(self, sessionName: str) -> bool:
         """
         Delete a session from Firebase.
         
         Args:
-            session_name (str): Name of the session to delete
+            sessionName (str): Name of the session to delete
             
         Returns:
             bool: True if successful, False otherwise
@@ -165,9 +167,9 @@ class FirebaseManager:
             return False
         
         try:
-            doc_ref = self.db.collection('influencer-marketing').document(session_name)
+            doc_ref = self.db.collection('influencer-marketing').document(sessionName)
             doc_ref.delete()
-            st.success(f"✅ Session '{session_name}' deleted successfully!")
+            st.success(f"✅ Session '{sessionName}' deleted successfully!")
             return True
             
         except Exception as e:
