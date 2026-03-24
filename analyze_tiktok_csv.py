@@ -33,14 +33,14 @@ load_dotenv()
 
 class RegulatoryViolationReference(BaseModel):
     """Regulatory violation reference details."""
-    law_name: str = Field(description="The law or guidance reference")
-    clause_name: str = Field(description="The specific article or clause")
+    lawGuidance: str = Field(description="The law or guidance reference")
+    articleClause: str = Field(description="The specific article or clause")
     highLevelSynthesis: str = Field(description="High-level synthesis of the violation")
 
 
 class DarkPatternAnalysis(BaseModel):
     """Individual dark pattern analysis result."""
-    dark_pattern: str = Field(description="The category of dark pattern identified")
+    category: str = Field(description="The category of dark pattern identified")
     excerpt: str = Field(description="Specific excerpt from the content")
     sectionType: str = Field(description="Type of section (transcript, caption, or description)")
     reasoning: str = Field(description="Explanation of why this qualifies as a dark pattern")
@@ -154,14 +154,18 @@ class TikTokCSVAnalyzer:
                     "error": "Langchain model not initialized"
                 }
             
-            # Prepare content for analysis
+            # Prepare content for analysis with the configured prompt
             content_for_analysis = f"""
+            {self.analysis_prompt}
+            
+            ---
+            
             Content to analyze:
             
             TikTok Video URL: {url}
             Transcript: {transcript}
             
-            Please analyze this content for dark patterns and deceptive practices.
+            Please analyze this content for dark patterns and deceptive practices according to the prompt above.
             """
             
             # Perform structured analysis using langchain

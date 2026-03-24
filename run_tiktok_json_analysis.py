@@ -224,6 +224,36 @@ def parse_args(argv: List[str]) -> Dict[str, Any]:
     }
 
 
+def save_results_to_json_file(results: Dict[str, Any], output_filename: str) -> bool:
+    """Save analysis results to a local JSON file.
+    
+    Args:
+        results: The complete results dictionary from run_analysis_on_items
+        output_filename: Name of the output JSON file
+        
+    Returns:
+        bool: True if successful, False otherwise
+    """
+    try:
+        # Create output directory if it doesn't exist
+        output_dir = "analysis_results"
+        os.makedirs(output_dir, exist_ok=True)
+        
+        # Full output path
+        output_path = os.path.join(output_dir, output_filename)
+        
+        # Save to JSON file with pretty formatting
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(results, f, indent=2, ensure_ascii=False)
+        
+        print(f"✅ Results saved to: {output_path}")
+        return True
+        
+    except Exception as e:
+        print(f"❌ Error saving results to JSON file: {str(e)}")
+        return False
+
+
 def main() -> None:
     args = parse_args(sys.argv[1:])
     json_paths = args["json_paths"]
@@ -246,6 +276,11 @@ def main() -> None:
         print(f"📊 Total videos: {results['summary']['total_videos']}")
         print(f"📊 Successful analyses: {results['summary']['successful_analyses']}")
         print(f"📊 Failed analyses: {results['summary']['failed_analyses']}")
+        
+        # Save results to local JSON file
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        output_filename = f"tiktok_analysis_results_{timestamp}.json"
+        save_results_to_json_file(results, output_filename)
     else:
         print(f"❌ Analysis failed: {results.get('error', 'Unknown error')}")
 
