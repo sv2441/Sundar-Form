@@ -1,0 +1,247 @@
+[
+  {
+    "brand": "L’Oréal Paris",
+    "hashtags": "#LorealParis #BecauseYoureWorthIt #LorealSkin #LorealHair #LorealMakeup #Maybelline #Garnier #Lancome #Kerastase #NYXCosmetics #CeraVe",
+    "keywords": "drugstore beauty, affordable skincare, viral foundation, dermatologist skincare, anti-aging serum, beauty routine, haircare routine, skincare routine"
+  },
+  {
+    "brand": "Lancôme",
+    "hashtags": "#Lancome #LancomeGlow #Genifique #LancomeSkincare",
+    "keywords": "luxury skincare, anti-aging serum, premium beauty, glow routine"
+  },
+  {
+    "brand": "Dior Beauty",
+    "hashtags": "#DiorBeauty #DiorMakeup #DiorSkin #DiorGlow",
+    "keywords": "luxury makeup, runway beauty, influencer campaign, prestige cosmetics"
+  },
+  {
+    "brand": "Chanel Beauty",
+    "hashtags": "#ChanelBeauty #ChanelMakeup #ChanelSkin",
+    "keywords": "timeless beauty, luxury cosmetics, classic makeup"
+  },
+  {
+    "brand": "YSL Beauty",
+    "hashtags": "#YSLBeauty #YSLMakeup #YSLGlow",
+    "keywords": "high-end makeup, bold luxury beauty, influencer campaigns"
+  },
+  {
+    "brand": "Charlotte Tilbury",
+    "hashtags": "#CharlotteTilbury #PillowTalk #CTBeauty #TilburyGlow",
+    "keywords": "viral makeup, celeb makeup artist, must-have products"
+  },
+  {
+    "brand": "Armani Beauty",
+    "hashtags": "#ArmaniBeauty #LuminousSilk #ArmaniGlow",
+    "keywords": "luxury foundation, red carpet makeup"
+  },
+  {
+    "brand": "Kérastase",
+    "hashtags": "#Kerastase #HairCareLuxury #KerastaseRoutine",
+    "keywords": "salon haircare, premium hair routine"
+  },
+  {
+    "brand": "La Roche-Posay",
+    "hashtags": "#LaRochePosay #DermSkincare #SkinBarrierRepair",
+    "keywords": "dermatologist recommended, sensitive skin, acne routine"
+  },
+  {
+    "brand": "Vichy",
+    "hashtags": "#Vichy #Mineral89 #VichySkin",
+    "keywords": "hydration skincare, barrier repair"
+  },
+  {
+    "brand": "Avène",
+    "hashtags": "#Avene #SensitiveSkinCare #AveneThermal",
+    "keywords": "calming skincare, redness treatment"
+  },
+  {
+    "brand": "Nivea",
+    "hashtags": "#Nivea #NiveaCreme #NiveaSkin",
+    "keywords": "moisturizing cream, everyday skincare"
+  },
+  {
+    "brand": "Garnier",
+    "hashtags": "#Garnier #GarnierSkinActive #MicellarWater",
+    "keywords": "affordable skincare, cleansing routine"
+  },
+  {
+    "brand": "The Body Shop",
+    "hashtags": "#TheBodyShop #CrueltyFreeBeauty #EthicalBeauty",
+    "keywords": "natural ingredients, sustainable beauty"
+  },
+  {
+    "brand": "The Ordinary",
+    "hashtags": "#TheOrdinary #Deciem #IngredientSkincare",
+    "keywords": "niacinamide, retinol routine, ingredient-led skincare"
+  },
+  {
+    "brand": "Byoma",
+    "hashtags": "#Byoma #BarrierRepair #ByomaSkin",
+    "keywords": "Gen Z skincare, skin barrier"
+  },
+  {
+    "brand": "The Inkey List",
+    "hashtags": "#TheInkeyList #SkincareSimplified",
+    "keywords": "ingredient skincare, affordable actives"
+  },
+  {
+    "brand": "Caudalie",
+    "hashtags": "#Caudalie #FrenchPharmacy #Vinoperfect",
+    "keywords": "natural skincare, glow skin"
+  },
+  {
+    "brand": "Nuxe",
+    "hashtags": "#Nuxe #HuileProdiogieuse #NuxeOil",
+    "keywords": "beauty oil, hydration glow"
+  },
+  {
+    "brand": "Dr. Hauschka",
+    "hashtags": "#DrHauschka #NaturalBeauty",
+    "keywords": "organic skincare, holistic beauty"
+  },
+  {
+    "brand": "Weleda",
+    "hashtags": "#Weleda #OrganicSkincare",
+    "keywords": "plant-based skincare"
+  },
+  {
+    "brand": "Pai Skincare",
+    "hashtags": "#PaiSkincare #SensitiveSkin",
+    "keywords": "clean beauty, gentle skincare"
+  },
+  {
+    "brand": "KIKO Milano",
+    "hashtags": "#KikoMilano #AffordableMakeup",
+    "keywords": "budget makeup, EU drugstore"
+  },
+  {
+    "brand": "Inglot",
+    "hashtags": "#Inglot #ProMakeup",
+    "keywords": "pigments, professional makeup"
+  },
+  {
+    "brand": "Louis Vuitton",
+    "hashtags": "#LouisVuitton #LV #LVStyle",
+    "keywords": "luxury fashion, designer bags, status fashion"
+  },
+  {
+    "brand": "Chanel (Fashion)",
+    "hashtags": "#Chanel #ChanelStyle #ChanelFashion",
+    "keywords": "haute couture, luxury fashion"
+  },
+  {
+    "brand": "Dior (Fashion)",
+    "hashtags": "#Dior #DiorFashion #DiorStyle",
+    "keywords": "runway fashion, couture"
+  },
+  {
+    "brand": "Gucci",
+    "hashtags": "#Gucci #GucciStyle #GucciLook",
+    "keywords": "bold luxury, influencer fashion"
+  },
+  {
+    "brand": "Prada",
+    "hashtags": "#Prada #PradaStyle #PradaLook",
+    "keywords": "minimalist luxury, designer wear"
+  },
+  {
+    "brand": "Hermès",
+    "hashtags": "#Hermes #Birkin #KellyBag",
+    "keywords": "ultra luxury, exclusivity, investment bags"
+  },
+  {
+    "brand": "Saint Laurent",
+    "hashtags": "#SaintLaurent #YSLStyle",
+    "keywords": "edgy luxury, black aesthetic"
+  },
+  {
+    "brand": "Balenciaga",
+    "hashtags": "#Balenciaga #StreetLuxury #BalenciagaStyle",
+    "keywords": "streetwear luxury, viral fashion"
+  },
+  {
+    "brand": "Givenchy",
+    "hashtags": "#Givenchy #GivenchyStyle",
+    "keywords": "luxury fashion"
+  },
+  {
+    "brand": "Fendi",
+    "hashtags": "#Fendi #FendiStyle #FendiBag",
+    "keywords": "luxury accessories"
+  },
+  {
+    "brand": "Zara",
+    "hashtags": "#Zara #ZaraStyle #ZaraHaul #ZaraOutfits",
+    "keywords": "fast fashion, trend cycles, outfit inspo"
+  },
+  {
+    "brand": "H&M",
+    "hashtags": "#HM #HMStyle #HMHaul",
+    "keywords": "affordable fashion, basics"
+  },
+  {
+    "brand": "Mango",
+    "hashtags": "#Mango #MangoStyle #MangoOutfits",
+    "keywords": "minimalist fashion"
+  },
+  {
+    "brand": "COS",
+    "hashtags": "#COS #COSStyle",
+    "keywords": "clean aesthetic, minimal wardrobe"
+  },
+  {
+    "brand": "& Other Stories",
+    "hashtags": "#AndOtherStories #StoriesStyle",
+    "keywords": "feminine fashion"
+  },
+  {
+    "brand": "Massimo Dutti",
+    "hashtags": "#MassimoDutti #DuttiStyle",
+    "keywords": "premium high street"
+  },
+  {
+    "brand": "Bershka",
+    "hashtags": "#Bershka #BershkaStyle",
+    "keywords": "Gen Z fashion"
+  },
+  {
+    "brand": "Pull&Bear",
+    "hashtags": "#PullAndBear #StreetCasual",
+    "keywords": "casual streetwear"
+  },
+  {
+    "brand": "Stradivarius",
+    "hashtags": "#Stradivarius #StradiStyle",
+    "keywords": "feminine fast fashion"
+  },
+  {
+    "brand": "Sinsay",
+    "hashtags": "#Sinsay #SinsayStyle",
+    "keywords": "ultra affordable fashion"
+  },
+  {
+    "brand": "Jacquemus",
+    "hashtags": "#Jacquemus #JacquemusBag",
+    "keywords": "viral runway, aesthetic fashion"
+  },
+  {
+    "brand": "Sézane",
+    "hashtags": "#Sezane #SezaneStyle",
+    "keywords": "Parisian fashion"
+  },
+  {
+    "brand": "Rouje",
+    "hashtags": "#Rouje #FrenchGirlStyle",
+    "keywords": "French aesthetic"
+  },
+  {
+    "brand": "Coperni",
+    "hashtags": "#Coperni #CoperniShow",
+    "keywords": "tech fashion, viral runway"
+  },
+  {
+    "brand": "Acne Studios",
+    "hashtags": "#AcneStudios #ScandiStyle",
+    "keywords": "Scandinavian fashion"
+  }
+]
