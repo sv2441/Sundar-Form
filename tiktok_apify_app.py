@@ -740,8 +740,21 @@ def main():
     # API Keys
     st.sidebar.divider()
     st.sidebar.header("🔑 API Keys")
-    apify_key  = st.sidebar.text_input("Apify API Key",  value=os.getenv("API_KEY", ""),         type="password")
-    openai_key = st.sidebar.text_input("OpenAI API Key", value=os.getenv("OPENAI_API_KEY", ""),   type="password")
+    # Apify Key
+    env_apify = os.getenv("API_KEY", "")
+    if env_apify:
+        st.sidebar.success("DATA API Key: Configured ✅")
+        apify_key = env_apify
+    else:
+        apify_key = st.sidebar.text_input("Apify API Key", type="password")
+
+    # OpenAI Key
+    env_openai = os.getenv("OPENAI_API_KEY", "")
+    if env_openai:
+        st.sidebar.success("Agent API Key: Configured ✅")
+        openai_key = env_openai
+    else:
+        openai_key = st.sidebar.text_input("OpenAI API Key", type="password")
 
     if not apify_key or not openai_key:
         st.warning("⚠️ Enter both API keys in the sidebar.")
